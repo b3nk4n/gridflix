@@ -19,20 +19,6 @@ GridFlix is a fancy frontend for browsing your video folders on Windows.
 - 🪟 Sets Grid view, List view, and sorting options for each folder
 - 📦 Portable
 
-## Demo
-
-You can feel it by visiting the demo site, but there is no actual video content.
-
-Please note that GridFlix is a local app, you need to download and run it on your own computer to have the full experience.
-
-[https://gridflix.kuma.pet](https://gridflix.kuma.pet/list/**app**videos)
-
-## Comparison
-
-The same folder in Windows Explorer. GridFlix is better, right?
-
-<img src="https://github.com/user-attachments/assets/1f19ddf5-3410-4a87-9d8a-316dc9eb4dc1" width=500 />
-
 ## Requirements
 
 - Windows 10 or 11 (x64)
@@ -86,17 +72,6 @@ Extra requirements:
    ```bash
    deno task start
    ```
-
-## Gallery
-
-It is how it feels on my 48" TV:
-
-<img src="https://github.com/user-attachments/assets/04c5bc33-7297-48ea-8a65-393d86841651" width="600" />
-
-Playback position and mark as watched features:
-
-<img src="https://github.com/user-attachments/assets/5866abc8-6113-4875-8753-61e082e8e452" width="600" />
-
 
 ## FAQ
 
