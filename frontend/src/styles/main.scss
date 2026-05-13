@@ -3,7 +3,7 @@
 @import "bootstrap-vue-next/dist/bootstrap-vue-next.css";
 
 :root {
-    scrollbar-color: $akaigrid-dark transparent;
+    scrollbar-color: $gridflix-dark transparent;
 }
 
 #app {
@@ -17,46 +17,46 @@ body {}
     color: #aaa;
     transition: color 0.3s ease;
 
-    .akai {
-        color: $akai;
+    .theme {
+        color: $theme;
         font-weight: 700;
         font-size: 30px;
     }
 
     &:hover {
-        .akai {
-            color: lighten($akai, 10%);
+        .theme {
+            color: lighten($theme, 10%);
         }
     }
 }
 
 .form-control {
-    background-color: $akaigrid-dark;
+    background-color: $gridflix-dark;
 
     &:focus {
-        background-color: darken($akaigrid-dark, 10%);
-        border-color: $akai;
-        box-shadow: 0 0 0 0.2rem rgba($akai, 0.25);
+        background-color: darken($gridflix-dark, 10%);
+        border-color: $theme;
+        box-shadow: 0 0 0 0.2rem rgba($theme, 0.25);
     }
 }
 
 .btn-secondary {
-    background-color: $akaigrid-dark;
+    background-color: $gridflix-dark;
     border-color: rgba(0, 0, 0, 0.1);
 
     &:hover {
-        background-color: $akai;
+        background-color: $theme;
         border-color: rgba(0, 0, 0, 0.2);
     }
 
     &:disabled {
-        background-color: $akaigrid-dark;
+        background-color: $gridflix-dark;
         border-color: rgba(0, 0, 0, 0.1);
         color: #aaa;
     }
 
     &.active {
-        background-color: $akai;
+        background-color: $theme;
         border-color: rgba(0, 0, 0, 0.2);
     }
 }
@@ -134,7 +134,7 @@ body {}
             left: 0;
 
             .progress-current {
-                background-color: $akai;
+                background-color: $theme;
                 height: 100%;
                 // Override it with a custom width
                 width: 50%;
@@ -147,6 +147,6 @@ body {}
     }
 
     &:hover {
-        background-color: lighten($akaigrid-dark, 10%);
+        background-color: lighten($gridflix-dark, 10%);
     }
 }

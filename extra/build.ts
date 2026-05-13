@@ -23,9 +23,9 @@ export async function pack() {
     const cwd = "./build/";
 
     // These variables are assume the cwd is ./build
-    const targetDirCWD = "./AkaiGrid";
+    const targetDirCWD = "./GridFlix";
     const exe7zr = "../tools/7zr.exe";
-    const outputCWD = `./akaigrid-win-x64.7z`;
+    const outputCWD = `./gridflix-win-x64.7z`;
     const level = 9;
 
     const targetDir = path.join(cwd, targetDirCWD);
@@ -34,7 +34,7 @@ export async function pack() {
     const fileList = [
         ["./tools/ffmpeg", "./tools/ffmpeg"],
         ["./config-template.yaml", "./config.yaml"],
-        ["./AkaiGrid.exe", "./AkaiGrid.exe"],
+        ["./GridFlix.exe", "./GridFlix.exe"],
     ];
 
     // Clean up the target directory
@@ -143,7 +143,7 @@ export function buildBackend() {
             "--no-check",
             "--allow-all",
             "--output",
-            "AkaiGrid.exe",
+            "GridFlix.exe",
             "--node-modules-dir=none",
             "--target",
             "x86_64-pc-windows-msvc",

@@ -1,17 +1,17 @@
 import { assertEquals } from "jsr:@std/assert";
-import { AkaiGrid } from "./akaigrid.ts";
+import { GridFlix } from "./gridflix.ts";
 
 Deno.test("Test appdata dir", async () => {
     // Create a temporary directory
     const tempDir = Deno.makeTempDirSync();
 
-    // Create an instance of AkaiGrid
-    const akaiGrid = await AkaiGrid.createInstance(tempDir);
+    // Create an instance of GridFlix
+    const gridFlix = await GridFlix.createInstance(tempDir);
 
     // Check if the appDataDir is set correctly
-    assertEquals(akaiGrid.appDataDir, tempDir);
+    assertEquals(gridFlix.appDataDir, tempDir);
 
-    await akaiGrid.close();
+    await gridFlix.close();
 
     // Clean up
     Deno.removeSync(tempDir, { recursive: true });
@@ -21,31 +21,31 @@ Deno.test("Test isAllowedPath", async () => {
     // Create a temporary directory
     const tempDir = Deno.makeTempDirSync();
 
-    // Create an instance of AkaiGrid
-    const akaiGrid = await AkaiGrid.createInstance(tempDir);
+    // Create an instance of GridFlix
+    const gridFlix = await GridFlix.createInstance(tempDir);
 
-    let result = akaiGrid.isAllowedPath("C:\\MyExampleVideosFolder\\Animes\\");
+    let result = gridFlix.isAllowedPath("C:\\MyExampleVideosFolder\\Animes\\");
     assertEquals(result, true);
 
-    result = akaiGrid.isAllowedPath("C:\\MyExampleVideosFolder\\Animes");
+    result = gridFlix.isAllowedPath("C:\\MyExampleVideosFolder\\Animes");
     assertEquals(result, true);
 
-    result = akaiGrid.isAllowedPath("C:\\NotAllowedFolder");
+    result = gridFlix.isAllowedPath("C:\\NotAllowedFolder");
     assertEquals(result, false);
 
-    result = akaiGrid.isAllowedPath("C:\\MyExampleVideosFolder\\..");
+    result = gridFlix.isAllowedPath("C:\\MyExampleVideosFolder\\..");
     //assertEquals(result, false);
 
-    result = akaiGrid.isAllowedPath("C:\\MyExampleVideosFolder\\..\\Animes");
+    result = gridFlix.isAllowedPath("C:\\MyExampleVideosFolder\\..\\Animes");
     //assertEquals(result, false);
 
-    result = akaiGrid.isAllowedPath("C:\\MyExampleVideosFolder\\.\\Animes\\A\\B\\C");
+    result = gridFlix.isAllowedPath("C:\\MyExampleVideosFolder\\.\\Animes\\A\\B\\C");
     //assertEquals(result, false);
 
-    result = akaiGrid.isAllowedPath("/home/user/MyExampleVideosFolder/Animes/");
+    result = gridFlix.isAllowedPath("/home/user/MyExampleVideosFolder/Animes/");
     assertEquals(result, false);
 
-    await akaiGrid.close();
+    await gridFlix.close();
 
     // Clean up
     Deno.removeSync(tempDir, { recursive: true });

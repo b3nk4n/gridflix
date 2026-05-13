@@ -82,9 +82,9 @@ const hasInvalidFolders = computed(() => {
 // Watch path, update the page title
 watch(path, (newPath) => {
     if (pageType.value === "home") {
-        document.title = "AkaiGrid";
+        document.title = "GridFlix";
     } else {
-        document.title = newPath + " - AkaiGrid";
+        document.title = newPath + " - GridFlix";
     }
 });
 
@@ -371,10 +371,10 @@ async function setDone(item) {
 
 <template>
     <div>
-        <div class="akaigrid-navbar">
+        <div class="gridflix-navbar">
             <router-link class="navbar-brand" to="/">
-                <span class="akai">Akai</span>
-                <sup>Grid</sup>
+                <span class="theme">Grid</span>
+                <sup>Flix</sup>
             </router-link>
 
             <!-- Toolbar -->
@@ -467,7 +467,7 @@ async function setDone(item) {
 <style lang="scss" scoped>
 @import "../styles/vars.scss";
 
-.akaigrid-navbar {
+.gridflix-navbar {
     height: 59px;
     margin: 10px 0;
     position: sticky;
@@ -491,7 +491,7 @@ async function setDone(item) {
 }
 
 .address-bar {
-    background-color: $akaigrid-dark;
+    background-color: $gridflix-dark;
     padding: 10px 20px;
     border-radius: $border-radius;
     transition: all 0.3s ease-in-out;

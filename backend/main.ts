@@ -8,7 +8,7 @@ if (!process.env.NODE_ENV) {
 }
 
 const logLevel = setupLog();
-log.info("AkaiGrid " + appVersion);
+log.info("GridFlix " + appVersion);
 log.info("Shell (ComSpec): " + process.env.ComSpec);
 log.info("Env: " + process.env.NODE_ENV);
 log.info(`Log level: ${logLevel}`);
@@ -40,10 +40,10 @@ try {
     server = await Server.createInstance();
 
     await server.run((url) => {
-        if (server.akaiGrid.config.launchBrowser && !isDev()) {
+        if (server.gridFlix.config.launchBrowser && !isDev()) {
             // Open the URL in the default browser
             start(url);
-        } else if (server.akaiGrid.config.launchBrowser) {
+        } else if (server.gridFlix.config.launchBrowser) {
             log.debug("launchBrowser is set to true! But for convenience, we will not open the browser in dev mode.");
         }
 

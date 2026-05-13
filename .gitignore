@@ -5,7 +5,7 @@
 /build
 /coverage
 /tmp
-/AkaiGrid.exe
+/GridFlix.exe
 /release
 
 # Deno's Lockfile is weird, I don't understnad the behaviour at the moment

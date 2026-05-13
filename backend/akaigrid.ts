@@ -1,20 +1,20 @@
 import * as fs from "@std/fs";
 import * as path from "@std/path";
-import { AkaiGridConfig, AkaiGridConfigSchema, isDemo, isDev, isFileLocked, isSamePath, isSubPath, log, start, videoExtensions } from "./util.ts";
+import { GridFlixConfig, GridFlixConfigSchema, isDemo, isDev, isFileLocked, isSamePath, isSubPath, log, start, videoExtensions } from "./util.ts";
 import * as yaml from "jsr:@std/yaml@^1.0.10";
 import { Entry } from "./entry.ts";
 import { closeKv, initKv, kv, kvDeletePrefix } from "./db/kv.ts";
 import { DirConfig, DirConfigSchema } from "../common/util.ts";
 import { clearAllStatCache, clearStatCache, statCache } from "./file-stat.ts";
 
-export class AkaiGrid {
+export class GridFlix {
     appDataDir: string;
 
     /**
      * This variable will be set by createInstance(...)
      * Use ! to skip the check here
      */
-    config!: AkaiGridConfig;
+    config!: GridFlixConfig;
     configFileWatcher!: Deno.FsWatcher;
 
     configFilename = "config.yaml";
@@ -34,7 +34,7 @@ export class AkaiGrid {
             //await kvDeletePrefix("lastPosition");
         }
 
-        const instance = new AkaiGrid(appDataDir, thumbnailDir);
+        const instance = new GridFlix(appDataDir, thumbnailDir);
 
         if (!await fs.exists(instance.configFullPath)) {
             const configTemplatePath = "./config-template.yaml";
@@ -44,14 +44,14 @@ export class AkaiGrid {
                 await Deno.copyFile("./config-template.yaml", instance.configFullPath);
             } else {
                 // Probably the user deleted it or it is in Deno.build.standalone mode
-                log.error("config-template.yaml is not found. Please download it from the repository: https://github.com/louislam/akaigrid.");
+                log.error("config-template.yaml is not found. Please download it from the repository: https://github.com/louislam/gridflix.");
             }
         }
 
         const configFile = await Deno.readTextFile(instance.configFullPath);
 
         try {
-            instance.config = AkaiGridConfigSchema.parse(yaml.parse(configFile));
+            instance.config = GridFlixConfigSchema.parse(yaml.parse(configFile));
         } catch (error) {
             if (error instanceof Error) {
                 log.error(error.message);
@@ -68,7 +68,7 @@ export class AkaiGrid {
     }
 
     /**
-     * You should use the static method createInstance() to create an instance of AkaiGrid.
+     * You should use the static method createInstance() to create an instance of GridFlix.
      */
     private constructor(appDataDir: string, thumbnailDir: string) {
         this.appDataDir = appDataDir;
@@ -106,7 +106,7 @@ export class AkaiGrid {
                     isDirectory: true,
                     isFile: false,
                     absolutePath: dir,
-                    akaiGrid: this,
+                    gridFlix: this,
                 }),
             );
         }
@@ -177,7 +177,7 @@ export class AkaiGrid {
                 isDirectory: entry.isDirectory,
                 isFile: entry.isFile,
                 absolutePath: path.join(dir, entry.name),
-                akaiGrid: this,
+                gridFlix: this,
             });
             yield obj;
         }
@@ -191,7 +191,7 @@ export class AkaiGrid {
             isDirectory: stat.isDirectory,
             isFile: stat.isFile,
             absolutePath: path,
-            akaiGrid: this,
+            gridFlix: this,
         });
     }
 
@@ -337,7 +337,7 @@ export class AkaiGrid {
         log.info("Clearing all stat cache...");
         await clearAllStatCache();
 
-        log.info("AkaiGrid closed.");
+        log.info("GridFlix closed.");
     }
 
     /**
@@ -353,7 +353,7 @@ export class AkaiGrid {
             if (event.kind === "modify" || event.kind === "create") {
                 const configFile = await Deno.readTextFile(this.configFullPath);
                 try {
-                    this.config = AkaiGridConfigSchema.parse(yaml.parse(configFile));
+                    this.config = GridFlixConfigSchema.parse(yaml.parse(configFile));
                     log.info("Reload config file successfully!");
                     await this.checkDirs();
                 } catch (error) {

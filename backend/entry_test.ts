@@ -2,13 +2,13 @@ import { assertEquals } from "jsr:@std/assert";
 import { Entry } from "./entry.ts";
 import * as path from "@std/path";
 import { Buffer } from "node:buffer";
-import { AkaiGrid } from "./akaigrid.ts";
+import { GridFlix } from "./gridflix.ts";
 import { clearAllStatCache } from "./file-stat.ts";
 
-const akaiGrid: AkaiGrid = await AkaiGrid.createInstance("./tmp");
+const gridFlix: GridFlix = await GridFlix.createInstance("./tmp");
 
 globalThis.onunload = async () => {
-    await akaiGrid.close();
+    await gridFlix.close();
 };
 
 Deno.test("Test hash", async () => {
@@ -22,7 +22,7 @@ Deno.test("Test hash", async () => {
         isDirectory: stat.isDirectory,
         isFile: stat.isFile,
         absolutePath: p,
-        akaiGrid,
+        gridFlix,
     });
 
     // By another software (sha1)
@@ -56,7 +56,7 @@ Deno.test.ignore("Test Entry toDisplayObject", async () => {
         isDirectory: stat.isDirectory,
         isFile: stat.isFile,
         absolutePath: p,
-        akaiGrid,
+        gridFlix,
     });
 
     console.log(await entry.toDisplayObject(false));

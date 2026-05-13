@@ -39,8 +39,8 @@ export { log };
 
 export const placeholderImagePath = path.join(getFrontendDir(), "1x1.png");
 
-// Define the schema matching AkaiGridConfig
-export const AkaiGridConfigSchema = z.object({
+// Define the schema matching GridFlixConfig
+export const GridFlixConfigSchema = z.object({
     host: z.string().default("127.0.0.1"),
     port: z.number().default(60001),
     folders: z.array(z.string()).default([]),
@@ -52,8 +52,8 @@ export const AkaiGridConfigSchema = z.object({
     player: z.string().default(""),
 });
 
-// Infer the type from the schema (matches AkaiGridConfig)
-export type AkaiGridConfig = z.infer<typeof AkaiGridConfigSchema>;
+// Infer the type from the schema (matches GridFlixConfig)
+export type GridFlixConfig = z.infer<typeof GridFlixConfigSchema>;
 
 /**
  * For cmd.exe's start command, escape the string

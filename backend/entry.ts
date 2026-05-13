@@ -1,6 +1,6 @@
 import * as path from "@std/path";
 import crypto from "node:crypto";
-import { AkaiGrid } from "./akaigrid.ts";
+import { GridFlix } from "./gridflix.ts";
 import * as fs from "@std/fs";
 import { devLogTime, devLogTimeEnd, generateThumbnail, getFrontendDir, getVideoInfo, log, placeholderImagePath } from "./util.ts";
 import { kv } from "./db/kv.ts";
@@ -14,7 +14,7 @@ export class Entry {
     isDirectory: boolean;
     isFile: boolean;
     absolutePath: string;
-    akaiGrid: AkaiGrid;
+    gridFlix: GridFlix;
 
     /**
      * Call getStat() instead
@@ -26,7 +26,7 @@ export class Entry {
         this.isDirectory = input.isDirectory;
         this.isFile = input.isFile;
         this.absolutePath = input.absolutePath;
-        this.akaiGrid = input.akaiGrid;
+        this.gridFlix = input.gridFlix;
     }
 
     async getStat() {
@@ -52,7 +52,7 @@ export class Entry {
     }
 
     async getThumbnailPath() {
-        return path.join(this.akaiGrid.thumbnailDir, await this.getID() + ".jpg");
+        return path.join(this.gridFlix.thumbnailDir, await this.getID() + ".jpg");
     }
 
     async generateThumbnail(): Promise<string> {
@@ -84,7 +84,7 @@ export class Entry {
 
             // list the directory, get the first file and generate a thumbnail for it
             let entryList = [];
-            const entryGenerator = this.akaiGrid.list(this.absolutePath);
+            const entryGenerator = this.gridFlix.list(this.absolutePath);
 
             for await (const entry of entryGenerator) {
                 entryList.push(entry);
@@ -266,5 +266,5 @@ type InputType = {
     isDirectory: boolean;
     isFile: boolean;
     absolutePath: string;
-    akaiGrid: AkaiGrid;
+    gridFlix: GridFlix;
 };

@@ -1,5 +1,5 @@
 import * as fs from "@std/fs";
-import { AkaiGrid } from "./akaigrid.ts";
+import { GridFlix } from "./gridflix.ts";
 import { Router } from "@louislam/deno-serve-router";
 import { allowDevAllOrigin, devLogTime, devLogTimeEnd, getFrontendDir, isDemo, isDev, log, placeholderImagePath, sleep } from "./util.ts";
 import * as path from "@std/path";
@@ -9,7 +9,7 @@ import { getAllMPCHCMediaHistory } from "./history.ts";
 import { kv } from "./db/kv.ts";
 
 export class Server {
-    akaiGrid: AkaiGrid;
+    gridFlix: GridFlix;
     server?: Deno.HttpServer;
     router: Router;
     abortController: AbortController;
@@ -38,14 +38,14 @@ export class Server {
         }
 
         const appDataDir = "./";
-        const akaiGrid = await AkaiGrid.createInstance(appDataDir);
-        const hostname = akaiGrid.config.host;
-        const port = akaiGrid.config.port;
-        return new Server(akaiGrid, hostname, port, frontendDir);
+        const gridFlix = await GridFlix.createInstance(appDataDir);
+        const hostname = gridFlix.config.host;
+        const port = gridFlix.config.port;
+        return new Server(gridFlix, hostname, port, frontendDir);
     }
 
-    private constructor(akaiGrid: AkaiGrid, hostname: string, port: number, frontendDir: string) {
-        this.akaiGrid = akaiGrid;
+    private constructor(gridFlix: GridFlix, hostname: string, port: number, frontendDir: string) {
+        this.gridFlix = gridFlix;
         this.hostname = hostname;
         this.port = port;
         this.frontendDir = frontendDir;
@@ -54,7 +54,7 @@ export class Server {
 
         this.router.add("GET", "/api", (_req) => {
             const res = Response.json({
-                name: "AkaiGrid API",
+                name: "GridFlix API",
             });
             allowDevAllOrigin(res);
             return res;
@@ -66,7 +66,7 @@ export class Server {
             const dirConfig = DirConfigSchema.parse({});
             const list: ObjectAsArray<EntryDisplayObject> = {};
 
-            const entryList = this.akaiGrid.home();
+            const entryList = this.gridFlix.home();
 
             for (const entry of entryList) {
                 const obj = await entry.toDisplayObject(false);
@@ -90,7 +90,7 @@ export class Server {
                     return this.errorResponse(new Error("No directory specified"));
                 }
 
-                const isTopLevel = this.akaiGrid.isTopLevel(dir);
+                const isTopLevel = this.gridFlix.isTopLevel(dir);
 
                 const url = new URL(req.url);
                 let extraInfo = url.searchParams.get("extraInfo") === "true";
@@ -100,7 +100,7 @@ export class Server {
                     extraInfo = false;
                 }
 
-                const dirConfig = await this.akaiGrid.getDirConfig(dir);
+                const dirConfig = await this.gridFlix.getDirConfig(dir);
                 const list: ObjectAsArray<EntryDisplayObject> = {};
                 let allMediaHistory: ObjectAsArray<number> = {};
                 if (extraInfo) {
@@ -108,7 +108,7 @@ export class Server {
                 }
 
                 devLogTime("list " + dir);
-                const entryGenerator = this.akaiGrid.list(dir);
+                const entryGenerator = this.gridFlix.list(dir);
                 const toDisplayObjectPromises: Promise<void>[] = [];
 
                 // Generator will keep sending out entries
@@ -129,7 +129,7 @@ export class Server {
                     isTopLevel,
                     dirConfig,
                     extraInfo,
-                    previousDir: this.akaiGrid.previousDir(dir),
+                    previousDir: this.gridFlix.previousDir(dir),
                     list,
                 });
 
@@ -151,7 +151,7 @@ export class Server {
                 const body = await req.json();
                 const dirConfig = DirConfigSchema.parse(body);
 
-                await this.akaiGrid.setDirConfig(dir, dirConfig);
+                await this.gridFlix.setDirConfig(dir, dirConfig);
 
                 const res = Response.json({
                     status: true,
@@ -172,7 +172,7 @@ export class Server {
                     return this.errorResponse(new Error("No path specified"));
                 }
                 log.info("Open:", path);
-                await this.akaiGrid.open(path);
+                await this.gridFlix.open(path);
                 const res = Response.json({
                     status: true,
                 });
@@ -194,7 +194,7 @@ export class Server {
                     return this.errorResponse(new Error("No path specified"));
                 }
                 log.info("Open:", path);
-                await this.akaiGrid.openFolder(path);
+                await this.gridFlix.openFolder(path);
                 const res = Response.json({
                     status: true,
                 });
@@ -218,7 +218,7 @@ export class Server {
                 }
 
                 const yes = params.yes === "true";
-                await this.akaiGrid.setDone(path, yes);
+                await this.gridFlix.setDone(path, yes);
 
                 const res = Response.json({
                     status: true,
@@ -239,7 +239,7 @@ export class Server {
                     return this.errorResponse(new Error("No path specified"));
                 }
 
-                const entry = await this.akaiGrid.getEntry(path);
+                const entry = await this.gridFlix.getEntry(path);
                 const thumbnailPath = await entry.generateThumbnail();
                 const res = serveFile(req, thumbnailPath);
 
@@ -259,7 +259,7 @@ export class Server {
         this.router.add("GET", "/api/maintenance", async (req, params) => {
             try {
                 // Get file list from thumbnail directory
-                const dir = this.akaiGrid.thumbnailDir;
+                const dir = this.gridFlix.thumbnailDir;
                 const files = await Deno.readDir(dir);
                 let deletedCount = 0;
 
@@ -372,7 +372,7 @@ export class Server {
         log.info("Closing deno server...");
         this.abortController.abort();
 
-        log.info("Closing AkaiGrid...");
-        await this.akaiGrid.close();
+        log.info("Closing GridFlix...");
+        await this.gridFlix.close();
     }
 }
